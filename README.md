@@ -9,7 +9,7 @@ A pure JavaScript id3 tag parser.
 npm install id3-parser
 ```
 
-### Simple usage
+### Usage
 
 ```js
 var ID3 = require('id3-parser');
@@ -19,12 +19,15 @@ ID3.parse(new Reader(url, type));
 ID3.parseFromBuffer(buffer);
 ```
 
+The `id3-parser` module is certainly a CommonJS package and used in node.js. But, you can use it in mordern browser via `browserify`.
+
 ## API
 
 ### new Reader(url, type)
 
 ```js
-var reader = new Reader(url, type); // require('id3-parser').Reader
+var Reader = require('id3-parser').Reader;
+var reader = new Reader(url, type);
 ```
 
 The `type` could be:
@@ -39,6 +42,7 @@ And the `url` corresponds to its type.
 ### parse(reader)
 
 ```js
+var ID3 = require('id3-parser');
 ID3.parse(reader); // return the parsed tag object
 ```
 
