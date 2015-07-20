@@ -1,8 +1,10 @@
 module.exports = {
     version: {
-        major: 2,
-        minor: 3,
-        revision: 0
+        v2: {
+            major: 2,
+            minor: 3,
+            revision: 0
+        }
     },
     flags: {
         unsync: 0,

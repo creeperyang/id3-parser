@@ -289,6 +289,7 @@ function parse(reader) {
         var v1 = values[0];
         var v2 = values[1];
         var p;
+        console.log(v1, v2);
         if(!v2) {
             return v1;
         }
@@ -638,7 +639,8 @@ module.exports = {
     parseV2FromBuffer: parseV2FromBuffer,
     parseV2Header: parseV2Header,
     parse: parse,
-    parseFromBuffer: parseFromBuffer
+    parseFromBuffer: parseFromBuffer,
+    Reader: Reader
 };
 
 }).call(this,require("buffer").Buffer)
@@ -668,36 +670,33 @@ if(!('slice' in Uint8Array.prototype)) {
 function Reader(url, type) {
     var self = this;
     var errMsg;
+    var deferred;
 
     type = type || 'fileurl';
     this.url = url;
     this.type = type;
     this.size = 0;
-    this.bufferDeferred = Promise.deferred();
+    deferred = this.bufferDeferred = Promise.deferred();
 
     if(!url) {
         errMsg = 'emptyUrl';
 
     // url is local file path
     } else if(type === 'fileurl') {
-        fs.stat(self.url, function(err, stats) {
+
+        fs.readFile(url, function(err, buffer) {
             if(err) {
-                return self.bufferDeferred.reject(err);
+                return deferred.reject(err);
             }
-            self.size = stats.size;
-            fs.readFile(self.url, function(err, buffer) {
-                if(err) {
-                    return self.bufferDeferred.reject(err);
-                }
-                self.bufferDeferred.resolve(buffer);
-            });
+            self.size = buffer.length;
+            deferred.resolve(buffer);
         });
 
     // url is a Node BUffer object or Uint8Array object
     } else if(type === 'buffer') {
         this.size = url.length;
         if(url instanceof Uint8Array || (typeof Buffer !== 'undefined' && url instanceof Buffer)) {
-            this.bufferDeferred.resolve(url);
+            deferred.resolve(url);
         } else {
             errMsg = 'notValidBuffer';
         }
@@ -711,7 +710,7 @@ function Reader(url, type) {
             this.size = url.fileSize;
             reader = new FileReader();
             reader.onload = function(e) {
-                this.bufferDeferred.resolve(new Uint8Array(e.target.result)); 
+                deferred.resolve(new Uint8Array(e.target.result)); 
             };
             reader.readAsArrayBuffer(url);
         }
@@ -728,10 +727,10 @@ function Reader(url, type) {
             ajax.onload = function(arraybuffer) {
                 var u8 = new Uint8Array(arraybuffer);
                 self.size = u8.length;
-                self.bufferDeferred.resolve(u8);
+                deferred.resolve(u8);
             };
             ajax.onerror = function(e) {
-                self.bufferDeferred.reject(e);
+                deferred.reject(e);
             };
             ajax.send();
         }
@@ -740,7 +739,7 @@ function Reader(url, type) {
     }
 
     if(errMsg) {
-        self.bufferDeferred.reject(errMsg);
+        deferred.reject(errMsg);
     }
 }
 
