@@ -123,6 +123,8 @@ When first run test, script will try to download music file from remote. The dow
 
 ## Release History
 
+2015-07-24&nbsp;&nbsp;&nbsp;&nbsp;`v0.1.2`&nbsp;&nbsp;&nbsp;&nbsp;fix bug: `calcFrameSize` returning `NaN`
+
 2015-07-21&nbsp;&nbsp;&nbsp;&nbsp;`v0.1.1`&nbsp;&nbsp;&nbsp;&nbsp;fix version info bug
 
 2015-06-22&nbsp;&nbsp;&nbsp;&nbsp;`v0.1.0`&nbsp;&nbsp;&nbsp;&nbsp;init(parse v1 and most v2.3 tag)
