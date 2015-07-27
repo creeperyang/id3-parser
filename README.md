@@ -24,12 +24,12 @@ ID3.parse(buffer|file|uint8Array).then(function(tag) {
 
 The `id3-parser` module is certainly a CommonJS package and used in node.js. But, you can use it in mordern browser via `browserify`, or just include `id3-parser.browser.js`.
 
-Note: if you want to load remote music file in browser and to parse it, you can request the file and convert it into `Uint8Array`. There is one util in the project(location is `lib/fetch.js`, but not part of `id3-parser`) to help you.
+Note: if you want to load remote music file in browser and to parse it, you can request the file and convert it into `Uint8Array`. There is one util (at `lib/fetch.js`, but not part of published `id3-parser` lib) in the project to help you.
 
 ```js
 // if you integrate id3-parser.browser.js with the `lib/ajax.js`
-// or you bundle up all the modules yourself, and then include in browser,
-// you can do as below:
+// or you bundle up all the modules yourself,
+// and then include the enhanced lib in browser,you can do as below:
 ajax('http://7sbnba.com1.z0.glb.clouddn.com/test-v1-v2.3.mp3').then(function(res) {
     ID3.parse(new Uint8Array(res.target.response)).then(console.log.bind(console));
 });
@@ -108,6 +108,8 @@ npm test
 When first run test, script will try to download music file from remote. The download time depends on net.
 
 ## Release History
+
+2015-07-27&nbsp;&nbsp;&nbsp;&nbsp;`v1.0.1`&nbsp;&nbsp;&nbsp;&nbsp;bugfix: `StringUtils.readUTF8String` convert error with 3 bytes length character.
 
 2015-07-27&nbsp;&nbsp;&nbsp;&nbsp;`v1.0.0`&nbsp;&nbsp;&nbsp;&nbsp;API change and some improvements.
 
