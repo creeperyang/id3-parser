@@ -1,10 +1,10 @@
 {
   "name": "id3-parser",
-  "version": "0.1.2",
+  "version": "1.0.0",
   "description": "A pure JavaScript id3 tag parser.",
   "main": "lib/parser.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha -t 60000"
+    "test": "./node_modules/.bin/mocha -t 80000"
   },
   "repository": {
     "type": "git",
@@ -35,6 +35,6 @@
     "time-grunt": "^0.3.1"
   },
   "dependencies": {
-    "promise-a-plus": "^0.4.0"
+    "promise-a-plus": "^0.5.1"
   }
 }

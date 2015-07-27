@@ -3,13 +3,13 @@ module.exports = {
         v2: {
             major: 2,
             minor: 3,
-            revision: 0
+            revision: 0,
+            flags: {
+                unsync: 0,
+                xheader: 0,
+                experimental: 0
+            }
         }
-    },
-    flags: {
-        unsync: 0,
-        xheader: 0,
-        experimental: 0
     },
     artist: '王菲',
     album: '匆匆那年',

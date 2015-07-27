@@ -3,17 +3,17 @@ module.exports = {
         v2: {
             major: 2,
             minor: 3,
-            revision: 0
+            revision: 0,
+            flags: {
+                unsync: 0,
+                xheader: 0,
+                experimental: 0
+            }
         },
         v1: {
             major: 1,
             minor: 1
         }
-    },
-    flags: {
-        unsync: 0,
-        xheader: 0,
-        experimental: 0
     },
     title: 'Bye Bye',
     artist: 'Mariah Carey',

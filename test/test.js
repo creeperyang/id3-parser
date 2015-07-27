@@ -5,11 +5,9 @@ var fs = require('fs');
 var http = require('http');
 
 var ID3 = require('../lib/parser.js');
-var Reader = ID3.Reader;
 var Promise = require('promise-a-plus');
 var expectedV3 = require('./expected/v3.js');
 var expectedV2 = require('./expected/v2.js');
-var expectedV1 = require('./expected/v1.js');
 
 var genFilePromise = function(localUrl, remoteUrl) {
     return new Promise(function(resolve, reject) {
@@ -37,14 +35,10 @@ describe('Test id3-parser', function() {
         var localUrl = __dirname + '/test-no-v1.mp3';
         var remoteUrl = 'http://7sbnba.com1.z0.glb.clouddn.com/test-no-v1.mp3';
         var filePromise = genFilePromise(localUrl, remoteUrl);
-        var reader;
 
         before(function(done){
             filePromise.then(function(x) {
-                reader = new Reader(localUrl);
-                reader.bufferDeferred.promise.then(function() {
-                    done();
-                });
+                done();
             });
             filePromise.catch(function(reason) {
                 console.log('Failed to download music file, reason is ', reason);
@@ -56,56 +50,10 @@ describe('Test id3-parser', function() {
             });
         });
 
-        describe('#new Reader()', function() {
-            it('should correctly return a reader', function(done) {
-                
-                reader.bufferDeferred.promise.then(function(buffer) {
-                    assert.equal(reader.type, 'fileurl');
-                    assert.equal(reader.size, 3892269);
-                    assert.equal(reader.url, localUrl);
-                    fs.readFile(localUrl, function(err, data) {
-                        assert.deepEqual(data, buffer);
-                        done();
-                    });
-                }).catch(function(err) {
-                    done(err);
-                });
-
-            });
-        });
-
-        describe('#parseV1(reader)', function() {
-            it('should correctly identify v1 not exist', function(done) {
-                ID3.parseV1(reader).then(function(tags) {
-                    assert.equal(tags, false);
-                    done();
-                }).catch(function(err) {
-                    done(err);
-                });
-            });
-        });
-
-        describe('#parse(reader)', function() {
+        describe('#parse(buffer)', function() {
             it('should correctly parse v2.3 tags and identify v1 not exist', function(done) {
                 fs.readFile(__dirname + '/expected/cover.jpg', function(err, data) {
-                    ID3.parse(reader).then(function(tags) {
-                        assert.deepEqual(tags.image.data, data);
-                        delete tags.image.data;
-                        assert.deepEqual(tags, expectedV2);
-                        done();
-                    }).catch(function(err) {
-                        done(err);
-                    });
-                });
-            });
-        });
-
-        describe('#parseFromBuffer(buffer)', function() {
-            it('should correctly parse v2.3 tags and identify v1 not exist', function(done) {
-                fs.readFile(__dirname + '/expected/cover.jpg', function(err, data) {
-                    reader.bufferDeferred.promise.then(function(buffer) {
-                        return ID3.parseFromBuffer(buffer);
-                    }).then(function(tags) {
+                    ID3.parse(fs.readFileSync(localUrl)).then(function(tags) {
                         assert.deepEqual(tags.image.data, data);
                         delete tags.image.data;
                         assert.deepEqual(tags, expectedV2);
@@ -122,14 +70,10 @@ describe('Test id3-parser', function() {
         var localUrl = __dirname + '/test-v1-v2.3.mp3';
         var remoteUrl = 'http://7sbnba.com1.z0.glb.clouddn.com/test-v1-v2.3.mp3';
         var filePromise = genFilePromise(localUrl, remoteUrl);
-        var reader;
 
         before(function(done){
             filePromise.then(function() {
-                reader = new Reader(localUrl);
-                reader.bufferDeferred.promise.then(function() {
-                    done();
-                });
+                done();
             });
             filePromise.catch(function(reason) {
                 console.log('Failed to download music file, reason is ', reason);
@@ -141,54 +85,10 @@ describe('Test id3-parser', function() {
             });
         });
 
-        describe('#new Reader()', function() {
-            it('should correctly return a reader', function(done) {
-                reader.bufferDeferred.promise.then(function(buffer) {
-                    assert.equal(reader.type, 'fileurl');
-                    assert.equal(reader.size, 4306102);
-                    assert.equal(reader.url, localUrl);
-                    fs.readFile(localUrl, function(err, data) {
-                        assert.deepEqual(data, buffer);
-                        done();
-                    });
-                }).catch(function(err) {
-                    done(err);
-                });
-            });
-        });
-
-        describe('#parseV1(reader)', function() {
-            it('should correctly return v1 tags', function(done) {
-                ID3.parseV1(reader).then(function(tags) {
-                    assert.deepEqual(tags, expectedV1);
-                    done();
-                }).catch(function(err) {
-                    done(err);
-                });
-            });
-        });
-
-        describe('#parse(reader)', function() {
+        describe('#parse(buffer)', function() {
             it('should correctly parse v2.3 and v1 tags', function(done) {
                 fs.readFile(__dirname + '/expected/cover2.jpg', function(err, data) {
-                    ID3.parse(reader).then(function(tags) {
-                        assert.deepEqual(tags.image.data, data);
-                        delete tags.image.data;
-                        assert.deepEqual(tags, expectedV3);
-                        done();
-                    }).catch(function(err) {
-                        done(err);
-                    });
-                });
-            });
-        });
-
-        describe('#parseFromBuffer(buffer)', function() {
-            it('should correctly parse v2.3 and v1 tags', function(done) {
-                fs.readFile(__dirname + '/expected/cover2.jpg', function(err, data) {
-                    reader.bufferDeferred.promise.then(function(buffer) {
-                        return ID3.parseFromBuffer(buffer);
-                    }).then(function(tags) {
+                    ID3.parse(fs.readFileSync(localUrl)).then(function(tags) {
                         assert.deepEqual(tags.image.data, data);
                         delete tags.image.data;
                         assert.deepEqual(tags, expectedV3);
