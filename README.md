@@ -27,14 +27,19 @@ The `id3-parser` module is certainly a CommonJS package and used in node.js. But
 Note: if you want to load remote music file in browser and to parse it, you can request the file and convert it into `Uint8Array`. There is one util in the project(but not part of `id3-parser`) to help you.
 
 ```js
-// include lib/fetch.js (with browserify)
-var ajax = require('lib/fetch.js');
-ajax('http://7sbnba.com1.z0.glb.clouddn.com/test-v1-v2.3.mp3').then(function(res) { 
-    return new Uint8Array(res.target.response);
-}).then(function(uint8Array) {
-    console.log(uint8Array); //[73, 68, 51, 3......]
-    ID3.parse(uint8Array);
-}); 
+// if you include id3-parser.browser.js and browserify `lib/ajax.js`
+// or you browserify the lib yourself, the simplest way to use the lib would be like:
+ajax('http://7sbnba.com1.z0.glb.clouddn.com/test-v1-v2.3.mp3').then(function(res) {
+    ID3.parse(new Uint8Array(res.target.response)).then(console.log.bind(console));
+    // output:
+    // {
+    //     album: "E=Mc²",
+    //     artist: "Mariah Carey",
+    //     comment: "",
+    //     genre: ""
+    //     // ...
+    // }
+});
 ```
 
 ## API
