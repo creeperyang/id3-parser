@@ -22,6 +22,18 @@ ID3.parse(buffer|file|uint8Array).then(function(tag) {
 });
 ```
 
+### Typical usage for local files
+```js
+var ID3 = require('id3-parser');
+
+// filePath as string
+var fileBuffer = fs.readFileSync(filePath);
+
+ID3.parse(fileBuffer).then(function (tag) {
+    console.log(tag);
+});
+```
+
 The `id3-parser` module is certainly a CommonJS package and used in node.js. But, you can use it in mordern browser via `browserify`, or just include `id3-parser.browser.js`.
 
 Note: if you want to load remote music file in browser and to parse it, you can request the file and convert it into `Uint8Array`. There is one util (at `lib/fetch.js`, but not part of published `id3-parser` lib) in the project to help you.
