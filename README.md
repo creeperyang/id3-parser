@@ -27,10 +27,10 @@ ID3.parse(buffer|file|uint8Array).then(function(tag) {
 var ID3 = require('id3-parser');
 
 // filePath as string
-var fileBuffer = fs.readFileSync(filePath);
-
-ID3.parse(fileBuffer).then(function (tag) {
-    console.log(tag);
+fs.readFile(filePath, function (err, data) {
+    ID3.parse(new Uint8Array(data)).then(function (tags) {
+        console.log(tags);
+    });
 });
 ```
 
