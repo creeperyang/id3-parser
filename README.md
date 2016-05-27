@@ -1,4 +1,4 @@
-# id3-parser
+﻿# id3-parser
 
 [![Build Status](https://travis-ci.org/creeperyang/id3-parser.svg?branch=master)](https://travis-ci.org/creeperyang/id3-parser)
 
@@ -118,6 +118,14 @@ npm test
 ```
 
 When first run test, script will try to download music file from remote. The download time depends on net.
+
+## Typings
+
+A typing definition file for use with id3-parser when programming in Typescript is available [here](https://github.com/dvdcxn/typed-id3-parser). Alternatively, it may be installed using [Typings](https://github.com/typings/typings). To do so, execute the following command within a folder/project with a `typings.json` file:
+
+```shell
+typings install id3-parser --save
+```
 
 ## Release History
 
