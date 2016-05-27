@@ -1,6 +1,6 @@
 {
   "name": "id3-parser",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A pure JavaScript id3 tag parser.",
   "main": "lib/parser.js",
   "scripts": {
@@ -13,7 +13,8 @@
   "keywords": [
     "id3",
     "id3 parser",
-    "id3 tag"
+    "id3 tag",
+    "mp3 metadata"
   ],
   "author": "creeperyang",
   "license": "MIT",
