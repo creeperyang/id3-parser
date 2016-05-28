@@ -2,6 +2,7 @@ node_modules
 *.tar.gz
 *.patch
 *.mp3
+!test/*.mp3
 *.log
 .tmp
 dist
