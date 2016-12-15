@@ -14,7 +14,7 @@ module.exports = function(grunt) {
         browserify: {
             browser: {
                 files: {
-                    'id3-parser.browser.js': ['lib/parser.js']
+                    'dest/id3-parser.browser.js': ['lib/parser.js']
                 }
             }
         },
@@ -35,12 +35,12 @@ module.exports = function(grunt) {
                 mangle: true,
                 beautify: false,
                 sourceMap: true,
-                banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' + 
+                banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
                     '<%= grunt.template.today("yyyy-mm-dd") %> */'
             },
             browser: {
                 files: {
-                    'id3-parser.browser.min.js': 'id3-parser.browser.js'
+                    'dest/id3-parser.browser.min.js': 'dest/id3-parser.browser.js'
                 }
             }
         }
@@ -52,6 +52,8 @@ module.exports = function(grunt) {
         'uglify'
     ]);
 
-    grunt.registerTask('default', ['build']);
+    grunt.registerTask('lint', ['jshint']);
+
+    grunt.registerTask('default', ['jshint']);
 
 };
