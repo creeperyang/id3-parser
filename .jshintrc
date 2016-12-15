@@ -17,10 +17,10 @@
   "strict": true,
   "trailing": true,
   "smarttabs": true,
-  "validthis": true, 
-  "predef": [ "-Promise" ],
+  "validthis": true,
   "globals": {
     "escape": true,
-    "File": true
+    "File": true,
+    "Promise": true
   }
 }
