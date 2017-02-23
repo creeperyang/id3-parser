@@ -15,6 +15,9 @@ module.exports = function(grunt) {
             browser: {
                 files: {
                     'dest/id3-parser.browser.js': ['lib/parser.js']
+                },
+                options: {
+                    ignore: ['buffer']
                 }
             }
         },
@@ -26,7 +29,8 @@ module.exports = function(grunt) {
             all: {
                 src: [
                     'Gruntfile.js',
-                    'lib/{,*/}*.js'
+                    'lib/{,*/}*.js',
+                    'test/{,*/}*.js'
                 ]
             }
         },

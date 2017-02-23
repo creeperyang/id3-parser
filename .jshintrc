@@ -21,6 +21,8 @@
   "globals": {
     "escape": true,
     "File": true,
-    "Promise": true
+    "Promise": true,
+    "describe": true,
+    "it": true
   }
 }
