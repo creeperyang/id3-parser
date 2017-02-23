@@ -29,4 +29,4 @@ module.exports = {
     comment: '',
     track: 0,
     genre: ''
-}
+};

@@ -1,5 +1,6 @@
 module.exports = {
     version: {
+        v1: false,
         v2: {
             major: 2,
             minor: 3,
