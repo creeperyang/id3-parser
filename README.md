@@ -17,7 +17,7 @@ npm install id3-parser --save
 ```js
 const ID3 = require('id3-parser');
 
-// ID3.parse(fs.readFileSync('x.mp3'))
+// buffer is like fs.readFileSync('x.mp3')
 ID3.parse(buffer|file|uint8Array).then(tag => {
     console.log(tag);
 });
@@ -76,16 +76,6 @@ module.exports = {
     track: 0,
     genre: ''
 }
-```
-
-So the api is high-level and can automatically detect node or browser enviroment.
-
-## Test
-
-Clone the repo and run:
-
-```bash
-npm test
 ```
 
 ## Typings

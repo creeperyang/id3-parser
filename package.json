@@ -1,11 +1,16 @@
 {
   "name": "id3-parser",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "A pure JavaScript id3 tag parser.",
   "main": "lib/parser.js",
+  "files": [
+    "dest",
+    "lib"
+  ],
   "scripts": {
     "lint": "grunt lint",
     "build": "grunt build",
+    "prepublish": "npm run lint && npm run build",
     "test": "mocha -t 80000"
   },
   "repository": {
@@ -17,7 +22,9 @@
     "id3 parser",
     "id3 tag",
     "id3v2",
-    "mp3 metadata"
+    "id3v1",
+    "mp3 metadata",
+    "mp3"
   ],
   "author": "creeperyang",
   "license": "MIT",
