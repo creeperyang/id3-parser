@@ -23,6 +23,11 @@ ID3.parse(buffer|file|uint8Array).then(tag => {
 });
 ```
 
+If you are in an environment with native or polyfilled Promise support, you can use `id3-parser/lib/parser-non-polyfilled.js` file:
+```
+const ID3 = require('id3-parser/lib/parser-non-polyfilled.js');
+```
+
 **[How to use inside browser?](https://github.com/creeperyang/id3-parser/wiki)**
 
 ## API
