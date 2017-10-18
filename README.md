@@ -1,6 +1,7 @@
 ﻿# id3-parser
 
 [![Build Status](https://travis-ci.org/creeperyang/id3-parser.svg?branch=master)](https://travis-ci.org/creeperyang/id3-parser)
+[![npm version](https://badge.fury.io/js/id3-parser.svg)](https://badge.fury.io/js/id3-parser)
 
 A pure JavaScript id3 tag parser.
 
