@@ -84,12 +84,10 @@ module.exports = {
 }
 ```
 
-## Typings
-
-A typing definition file for use with id3-parser when programming in Typescript is available [here](https://github.com/dvdcxn/typed-id3-parser). Alternatively, it may be installed using [Typings](https://github.com/typings/typings). To do so, execute the following command within a folder/project with a `typings.json` file:
-
-```bash
-typings install id3-parser --save
+## Typescript
+Typescript typings are shipped with the package. To use id3-parser in typescript, do:
+```typescript
+import * as id3Parser from 'id3-parser';
 ```
 
 ## License
