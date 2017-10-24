@@ -88,6 +88,9 @@ module.exports = {
 Typescript typings are shipped with the package. To use id3-parser in typescript, do:
 ```typescript
 import * as id3Parser from 'id3-parser';
+
+// if you are in an environment with native or polyfilled Promise support: 
+import * as id3Parser from 'id3-parser/lib/parser-non-polyfilled';
 ```
 
 ## License
