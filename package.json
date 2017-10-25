@@ -13,7 +13,9 @@
     "lint": "grunt lint",
     "build": "grunt build",
     "prepublish": "npm run lint && npm run build",
-    "test": "mocha -t 80000"
+    "test:unit": "mocha -t 80000",
+    "test:ts": "tsc --noImplicitAny lib/parser-non-polyfilled.d.ts && tsc --noImplicitAny index.d.ts",
+    "test": "npm run test:unit && npm run test:ts"
   },
   "repository": {
     "type": "git",
@@ -38,6 +40,7 @@
     "node": ">=0.10.0"
   },
   "devDependencies": {
+    "@types/node": "^8.0.46",
     "grunt": "^1.0.1",
     "grunt-browserify": "^5.0.0",
     "grunt-contrib-jshint": "^1.1.0",
@@ -45,7 +48,8 @@
     "jshint-stylish": "^2.2.1",
     "load-grunt-tasks": "^3.5.2",
     "mocha": "^3.5.0",
-    "time-grunt": "^1.4.0"
+    "time-grunt": "^1.4.0",
+    "typescript": "^2.5.3"
   },
   "dependencies": {
     "promise-a-plus": "^0.7.0"
