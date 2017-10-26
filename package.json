@@ -1,13 +1,14 @@
 {
   "name": "id3-parser",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "A pure JavaScript id3 tag parser.",
   "main": "lib/parser.js",
   "typings": "index.d.ts",
   "files": [
     "dest",
     "lib",
-    "index.d.ts"
+    "index.d.ts",
+    "id3Parser.d.ts"
   ],
   "scripts": {
     "lint": "grunt lint",
