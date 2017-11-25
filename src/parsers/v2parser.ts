@@ -148,10 +148,11 @@ function parseFrame(bytes: IBytes, minor: number, size: number) {
     let i = 0;
     // Text information frames
     // allows different types of text encoding, So the next byte (bytes[10]) represents encoding.
-    // 00 <---> ISO-8859-1 (ASCII), default encoding.
+    // 00 <---> ISO-8859-1 (ASCII), default encoding, represented as <text string>/<full text string>
     // 01 <---> UCS-2 encoded Unicode with BOM.
     // 02 <---> UTF-16BE encoded Unicode without BOM.
     // 03 <---> UTF-8 encoded Unicode.
+    // The 3 above represented as <text string according to encoding>/<full text string according to encoding>
     if (header.type === 'T') {
         encoding = bytes[10];
         // If is User defined text information frame (TXXX), then bytes[11]
@@ -208,13 +209,20 @@ function parseFrame(bytes: IBytes, minor: number, size: number) {
         }
         result.value = readBytesToString(bytes.slice(variableStart), encoding);
     }
-    // Attached picture frame.
+    /**
+     * Attached picture frame, format is:
+     * <Header for 'Attached picture', ID: "APIC">
+     *  Text encoding   $xx
+     *  MIME type       <text string> $00
+     *  Picture type    $xx
+     *  Description     <text string according to encoding> $00 (00)
+     *  Picture data    <binary data>
+     */
     else if (header.id === 'APIC') {
         encoding = bytes[10];
         const image = {
             type: null as string | null,
             mime: null as string | null,
-            // imageType: null, // cover(front)/cover(back)/ ....
             description: null as string | null,
             data: null as ArrayLike<number> | null,
         };
@@ -226,7 +234,8 @@ function parseFrame(bytes: IBytes, minor: number, size: number) {
                 break;
             }
         }
-        image.mime = readBytesToString(bytes.slice(variableStart), encoding, variableLength);
+        // MIME is always encoded as ISO-8859.
+        image.mime = readBytesToString(bytes.slice(variableStart), 0, variableLength);
         image.type = IMAGE_TYPES[bytes[variableStart + variableLength + 1]] || 'other';
         // Skip $00 and $xx(Picture type).
         variableStart += variableLength + 2;
