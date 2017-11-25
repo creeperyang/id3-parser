@@ -1,6 +1,4 @@
-'use strict';
-
-var Genres = [
+export default [
     'Blues',
     'Classic Rock',
     'Country',
@@ -149,7 +147,5 @@ var Genres = [
     'Anime',
     'JPop',
     'Synthpop',
-    'Rock/Pop'
+    'Rock/Pop',
 ];
-
-module.exports = Genres;
