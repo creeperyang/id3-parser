@@ -2,6 +2,10 @@ export interface IStringStringMap { [key: string]: string; }
 export interface IStringAnyMap { [key: string]: any; }
 
 export type IBytes = number[] | Buffer | Uint8Array;
+export interface ITXXXMap {
+    description: null | string;
+    value: null | string;
+}
 
 export interface IFlags {
     unsync: boolean;
@@ -80,7 +84,7 @@ export interface ITags extends IStringAnyMap {
     'isrc'?: string;
     'encoder-settings'?: string;
     'set-subtitle'?: string;
-    'user-defined-text-information'?: string;
+    'user-defined-text-information'?: ITXXXMap[];
     'year'?: string;
 
     /*

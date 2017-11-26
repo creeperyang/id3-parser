@@ -189,3 +189,29 @@ export function readBytesToString(bytes: ArrayLike<number>, encoding: number, ma
         return null;
     }
 }
+
+export function getEndpointOfBytes(bytes: ArrayLike<number>, encoding: number, start: number = 0) {
+    // ISO-8859 use $00 as end flag, and
+    // unicode use $00 00 as end flag.
+    const checker = encoding === 0
+        ? (index: number) => bytes[index] === 0
+        : (index: number) => (bytes[index] === 0 && bytes[index + 1] === 0);
+    let i = start;
+    for (; i < bytes.length; i++) {
+        if (checker(i)) {
+            break;
+        }
+    }
+    return i;
+}
+
+export function skipPaddingZeros(bytes: ArrayLike<number>, start: number): number {
+    for (let i = start; ; i++) {
+        if (bytes[i] === 0) {
+            start++;
+        } else {
+            break;
+        }
+    }
+    return start;
+}

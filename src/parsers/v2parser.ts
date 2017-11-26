@@ -1,8 +1,8 @@
-import FARME_TYPES from '../constants/frameTypes';
+import FARME_TYPES, { FrameTypeValueMap } from '../constants/frameTypes';
 import GENRES from '../constants/genres';
 import IMAGE_TYPES from '../constants/imageTypes';
-import { IBytes, IID3V2Tag, IV2VersionInfo } from '../interface';
-import { readBytesToISO8859, readBytesToString, readBytesToUTF8 } from '../utils';
+import { IBytes, IID3V2Tag, ITXXXMap, IV2VersionInfo } from '../interface';
+import { getEndpointOfBytes, readBytesToISO8859, readBytesToString, readBytesToUTF8, skipPaddingZeros } from '../utils';
 
 const V2_MIN_LENGTH = 20; // TAG HEADER(10) + ONE FRAME HEADER(10)
 
@@ -107,14 +107,43 @@ function parseV2Frames(bytes: IBytes, tags: IID3V2Tag) {
         }
         const frame = parseFrame(slice, version.minor, size);
         if (frame.tag) {
-            tags[frame.tag] = frame.value;
+            if (FrameTypeValueMap[frame.id as string] === 'array') {
+                if (tags[frame.tag]) {
+                    tags[frame.tag].push(frame.value);
+                } else {
+                    tags[frame.tag] = [frame.value];
+                }
+            } else {
+                tags[frame.tag] = frame.value;
+            }
         }
         position += slice.length;
     }
 }
 
+/**
+ * Parse id3 frame.
+ * @description
+ * Declared ID3v2 frames are of different types:
+ * 1. Unique file identifier
+ * 2. Text information frames
+ * 3. ...
+ *
+ * For frames that allow different types of text encoding, the first byte after header (bytes[10])
+ * represents encoding. Its value is of:
+ * 1. 00 <---> ISO-8859-1 (ASCII), default encoding, represented as <text string>/<full text string>
+ * 2. 01 <---> UCS-2 encoded Unicode with BOM.
+ * 3. 02 <---> UTF-16BE encoded Unicode without BOM.
+ * 4. 03 <---> UTF-8 encoded Unicode.
+ *
+ * And 2-4 represented as <text string according to encoding>/<full text string according to encoding>
+ * @param bytes Binary bytes.
+ * @param minor Minor version, 2/3/4
+ * @param size Frame size.
+ */
 function parseFrame(bytes: IBytes, minor: number, size: number) {
     const result = {
+        id: null as string | null,
         tag: null as string | null,
         value: null as string | object | null,
     };
@@ -128,6 +157,7 @@ function parseFrame(bytes: IBytes, minor: number, size: number) {
         ],
     };
     header.type = header.id[0];
+    result.id = header.id;
 
     if (minor === 4) {
         // TODO: parse v2.4 frame
@@ -146,32 +176,46 @@ function parseFrame(bytes: IBytes, minor: number, size: number) {
     let variableStart = 0;
     let variableLength = 0;
     let i = 0;
-    // Text information frames
-    // allows different types of text encoding, So the next byte (bytes[10]) represents encoding.
-    // 00 <---> ISO-8859-1 (ASCII), default encoding, represented as <text string>/<full text string>
-    // 01 <---> UCS-2 encoded Unicode with BOM.
-    // 02 <---> UTF-16BE encoded Unicode without BOM.
-    // 03 <---> UTF-8 encoded Unicode.
-    // The 3 above represented as <text string according to encoding>/<full text string according to encoding>
+    /**
+     * Text information frames, structure is:
+     * <Header for 'Text information frame', ID: "T000" - "TZZZ", excluding "TXXX">
+     * Text encoding    $xx
+     * Information    <text string according to encoding>
+     */
     if (header.type === 'T') {
         encoding = bytes[10];
-        // If is User defined text information frame (TXXX), then bytes[11]
-        // is Description (00): represented as a terminated string.
-        const offset = header.id === 'TXXX' ? 12 : 11;
-        result.value = readBytesToString(bytes.slice(offset), encoding);
-        // Specially handle the 'Content type'.
-        if (header.id === 'TCON' && result.value !== null) {
-            if (result.value[0] === '(') {
-                const handledTCON = result.value.match(/\(\d+\)/g);
-                if (handledTCON) {
-                    result.value = handledTCON.map(
-                        (v: string) => GENRES[+v.slice(1, -1)],
-                    ).join(',');
-                }
-            } else {
-                const genre = parseInt(result.value, 10);
-                if (!isNaN(genre)) {
-                    result.value = GENRES[genre];
+        // If is User defined text information frame (TXXX), then we should handle specially.
+        // <Header for 'User defined text information frame', ID: "TXXX" >
+        // Text encoding    $xx
+        // Description < text string according to encoding > $00(00)
+        // Value < text string according to encoding >
+        if (header.id === 'TXXX') {
+            variableStart = 11;
+            variableLength = getEndpointOfBytes(bytes, encoding, variableStart) - variableStart;
+            const value = {
+                description: readBytesToString(bytes.slice(variableStart), encoding, variableLength),
+                value: '',
+            } as ITXXXMap;
+            variableStart += variableLength + 1;
+            variableStart = skipPaddingZeros(bytes, variableStart);
+            value.value = readBytesToString(bytes.slice(variableStart), encoding);
+            result.value = value;
+        } else {
+            result.value = readBytesToString(bytes.slice(11), encoding);
+            // Specially handle the 'Content type'.
+            if (header.id === 'TCON' && result.value !== null) {
+                if (result.value[0] === '(') {
+                    const handledTCON = result.value.match(/\(\d+\)/g);
+                    if (handledTCON) {
+                        result.value = handledTCON.map(
+                            (v: string) => GENRES[+v.slice(1, -1)],
+                        ).join(',');
+                    }
+                } else {
+                    const genre = parseInt(result.value, 10);
+                    if (!isNaN(genre)) {
+                        result.value = GENRES[genre];
+                    }
                 }
             }
         }
@@ -227,14 +271,8 @@ function parseFrame(bytes: IBytes, minor: number, size: number) {
             data: null as ArrayLike<number> | null,
         };
         variableStart = 11;
-        variableLength = 0;
-        for (i = variableStart; ; i++) {
-            if (bytes[i] === 0) {
-                variableLength = i - variableStart;
-                break;
-            }
-        }
-        // MIME is always encoded as ISO-8859.
+        // MIME is always encoded as ISO-8859, So always pass 0 to encoding argument.
+        variableLength = getEndpointOfBytes(bytes, 0, variableStart) - variableStart;
         image.mime = readBytesToString(bytes.slice(variableStart), 0, variableLength);
         image.type = IMAGE_TYPES[bytes[variableStart + variableLength + 1]] || 'other';
         // Skip $00 and $xx(Picture type).
@@ -249,15 +287,8 @@ function parseFrame(bytes: IBytes, minor: number, size: number) {
         image.description = variableLength === 0
             ? null
             : readBytesToString(bytes.slice(variableStart), encoding, variableLength);
-        variableStart += variableLength + 1;
         // check $00 at start of the image binary data
-        for (i = variableStart; ; i++) {
-            if (bytes[i] === 0) {
-                variableStart++;
-            } else {
-                break;
-            }
-        }
+        variableStart = skipPaddingZeros(bytes, variableStart + variableLength + 1);
         image.data = bytes.slice(variableStart);
         result.value = image;
     }

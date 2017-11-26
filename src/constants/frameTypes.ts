@@ -84,3 +84,8 @@ const FRAME_TYPES: IStringStringMap = {
 };
 
 export default FRAME_TYPES;
+
+// Frame type to value map.
+export const FrameTypeValueMap: IStringStringMap = {
+    TXXX: 'array',
+};
