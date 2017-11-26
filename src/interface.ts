@@ -2,8 +2,15 @@ export interface IStringStringMap { [key: string]: string; }
 export interface IStringAnyMap { [key: string]: any; }
 
 export type IBytes = number[] | Buffer | Uint8Array;
+// TXXX frame
 export interface ITXXXMap {
     description: null | string;
+    value: null | string;
+}
+// COMM frame, comment from ID3v1 will only have value key.
+export interface ICOMMMap {
+    language?: null | string;
+    description?: null | string;
     value: null | string;
 }
 
@@ -103,8 +110,8 @@ export interface ITags extends IStringAnyMap {
     /*
      * Comment frame
      */
-    'comments'?: string;
-    'lyrics'?: string;
+    'comments'?: ICOMMMap[] | string;
+    'lyrics'?: ICOMMMap[];
 
     // image
     image?: IImage;

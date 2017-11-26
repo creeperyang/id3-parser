@@ -231,27 +231,36 @@ function parseFrame(bytes: IBytes, minor: number, size: number) {
         }
     }
     // Comments or Unsychronized lyric/text transcription.
+    /**
+     * Comments frame:
+     * <Header for 'Comment', ID: "COMM">
+     * Text encoding           $xx
+     * Language                $xx xx xx
+     * Short content descrip.  <text string according to encoding> $00 (00)
+     * The actual text         <full text string according to encoding>
+     *
+     * Unsychronised lyrics/text transcription frame:
+     * <Header for 'Unsynchronised lyrics/text transcription', ID: "USLT">
+     * Text encoding       $xx
+     * Language            $xx xx xx
+     * Content descriptor  <text string according to encoding> $00 (00)
+     * Lyrics/text         <full text string according to encoding>
+     */
     else if (header.id === 'COMM' || header.id === 'USLT') {
         encoding = bytes[10];
         variableStart = 14;
         variableLength = 0;
 
-        // Skip the comment description and retrieve only the comment its self
-        for (i = variableStart; ; i++) {
-            if (encoding === 1 || encoding === 2) {
-                if (bytes[i] === 0 && bytes[i + 1] === 0) {
-                    variableStart = i + 2;
-                    break;
-                }
-                i++;
-            } else {
-                if (bytes[i] === 0) {
-                    variableStart = i + 1;
-                    break;
-                }
-            }
-        }
-        result.value = readBytesToString(bytes.slice(variableStart), encoding);
+        const language = readBytesToISO8859(bytes.slice(11), 3);
+        variableLength = getEndpointOfBytes(bytes, encoding, variableStart) - variableStart;
+        const description = readBytesToString(bytes.slice(variableStart), encoding, variableLength);
+        variableStart = skipPaddingZeros(bytes, variableStart + variableLength + 1);
+
+        result.value = {
+            language,
+            description,
+            value: readBytesToString(bytes.slice(variableStart), encoding),
+        };
     }
     /**
      * Attached picture frame, format is:
