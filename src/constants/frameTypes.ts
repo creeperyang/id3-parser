@@ -81,6 +81,11 @@ const FRAME_TYPES: IStringStringMap = {
      */
     APIC: 'image',
     PIC: 'image',
+    /**
+     * User/owner/involved people frame
+     */
+    IPLS: 'involved-people-list',
+    OWNE: 'ownership',
 };
 
 export default FRAME_TYPES;

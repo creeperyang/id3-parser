@@ -113,6 +113,12 @@ export interface ITags extends IStringAnyMap {
     'comments'?: ICOMMMap[] | string;
     'lyrics'?: ICOMMMap[];
 
+    /**
+     * other frames
+     */
+    'involved-people-list'?: string;
+    'ownership'?: IStringStringMap;
+
     // image
     image?: IImage;
 }

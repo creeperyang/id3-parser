@@ -301,6 +301,38 @@ function parseFrame(bytes: IBytes, minor: number, size: number) {
         image.data = bytes.slice(variableStart);
         result.value = image;
     }
+    /**
+     * Involved people list frame:
+     * <Header for 'Involved people list', ID: "IPLS">
+     * Text encoding    $xx
+     * People list strings    <text strings according to encoding>
+     */
+    else if (header.id === 'IPLS') {
+        encoding = bytes[10];
+        result.value = readBytesToString(bytes.slice(11), encoding);
+    }
+    /**
+     * Ownership frame:
+     * <Header for 'Ownership frame', ID: "OWNE">
+     * Text encoding   $xx
+     * Price payed     <text string> $00
+     * Date of purch.  <text string>
+     * Seller          <text string according to encoding>
+     */
+    else if (header.id === 'OWNE') {
+        encoding = bytes[10];
+        variableStart = 11;
+        variableLength = getEndpointOfBytes(bytes, encoding, variableStart);
+        const pricePayed = readBytesToISO8859(bytes.slice(variableStart), variableLength);
+        variableStart += variableLength + 1;
+        const dateOfPurch = readBytesToISO8859(bytes.slice(variableStart), 8);
+        variableStart += 8;
+        result.value = {
+            pricePayed,
+            dateOfPurch,
+            seller: readBytesToString(bytes.slice(variableStart), encoding),
+        };
+    }
     else {
         // Do nothing to other frames.
     }
