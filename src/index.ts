@@ -1,6 +1,9 @@
 import { IBytes, IID3Tag, ITags } from './interface';
 import parseV1Data from './parsers/v1parser';
 import parseV2Data from './parsers/v2parser';
+import polyfill from './polyfill';
+
+polyfill(); // do polyfill.
 
 export default function parse(bytes: IBytes) {
     const v1data = parseV1Data(bytes);
