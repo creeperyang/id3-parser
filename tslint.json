@@ -15,7 +15,11 @@
             "check-open-brace",
             "check-whitespace"
         ],
-        "no-bitwise": false
+        "no-bitwise": false,
+        "object-literal-key-quotes": [
+            true,
+            "as-needed"
+        ]
     },
     "rulesDirectory": []
 }
