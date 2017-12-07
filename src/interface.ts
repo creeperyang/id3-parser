@@ -23,8 +23,8 @@ export interface IFlags {
 export interface IImage {
     type: string;
     mime: string;
-    imageType: string;
     descriptions: string;
+    data: ArrayLike<number>;
 }
 
 export interface IV1VersionInfo {
@@ -38,8 +38,8 @@ export interface IV2VersionInfo extends IV1VersionInfo {
 }
 
 export interface IVersionInfo {
-    v1: IV1VersionInfo;
-    v2: IV2VersionInfo;
+    v1: boolean | IV1VersionInfo;
+    v2: boolean | IV2VersionInfo;
 }
 
 export interface ITags extends IStringAnyMap {

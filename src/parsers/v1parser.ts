@@ -16,7 +16,7 @@ const V1_MIN_LENGTH = 128;
  * And extended tag is only supported by few programs, so we ignore it.
  * @param bytes binary bytes.
  */
-export default function parseV1Data(bytes: IBytes) {
+export default function parseV1Data(bytes: IBytes): false | IID3V1Tag {
     if (!bytes || bytes.length < V1_MIN_LENGTH) {
         return false;
     }
