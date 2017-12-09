@@ -1,13 +1,13 @@
 import { IBytes, IID3Tag, ITags } from './interface';
-import parseV1Data from './parsers/v1parser';
-import parseV2Data from './parsers/v2parser';
+import parseV1Tag from './parsers/v1parser';
+import parseV2Tag from './parsers/v2parser';
 import polyfill from './polyfill';
 
 polyfill(); // do polyfill.
 
 function parse(bytes: IBytes) {
-    const v1data = parseV1Data(bytes);
-    const v2data = parseV2Data(bytes);
+    const v1data = parseV1Tag(bytes);
+    const v2data = parseV2Tag(bytes);
     if (!v2data && !v1data) {
         return false;
     }
@@ -33,7 +33,7 @@ function parse(bytes: IBytes) {
 }
 
 export {
-    parseV1Data,
-    parseV2Data,
+    parseV1Tag,
+    parseV2Tag,
     parse,
 };
