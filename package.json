@@ -10,7 +10,9 @@
     "lint": "tslint src/**/*.ts test/**/*.ts -t verbose",
     "lint-fix": "tslint src/**/*.ts test/**/*.ts -t verbose --fix",
     "test": "TS_NODE_PROJECT='test/tsconfig.json' mocha --require ts-node/register 'test/*.spec.ts' --reporter dot",
-    "build": "rm -rf lib && tsc -P tsconfig.json"
+    "build": "npm run build:lib && npm run build:universal",
+    "build:lib": "rm -rf lib && tsc -P tsconfig.json",
+    "build:universal": "rm -rf lib/universal && tsc -P src/universal/tsconfig.json"
   },
   "repository": {
     "type": "git",
@@ -41,5 +43,8 @@
     "ts-node": "^3.3.0",
     "tslint": "^5.8.0",
     "typescript": "^2.6.1"
+  },
+  "dependencies": {
+    "promise-a-plus": "^0.7.0"
   }
 }
