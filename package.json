@@ -1,10 +1,11 @@
 {
   "name": "id3-parser",
-  "version": "1.5.1",
+  "version": "2.0.0-beta.1",
   "description": "A pure JavaScript id3 tag parser.",
   "main": "lib/parser.js",
   "files": [
-    "src"
+    "src",
+    "lib"
   ],
   "scripts": {
     "lint": "tslint src/**/*.ts test/**/*.ts -t verbose",
@@ -12,7 +13,8 @@
     "test": "TS_NODE_PROJECT='test/tsconfig.json' mocha --require ts-node/register 'test/*.spec.ts' --reporter dot",
     "build": "npm run build:lib && npm run build:universal",
     "build:lib": "rm -rf lib && tsc -P tsconfig.json",
-    "build:universal": "rm -rf lib/universal && tsc -P src/universal/tsconfig.json"
+    "build:universal": "rm -rf lib/universal && tsc -P src/universal/tsconfig.json",
+    "prepublish": "npm run lint && npm run test && npm run build"
   },
   "repository": {
     "type": "git",
