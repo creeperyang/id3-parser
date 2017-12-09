@@ -1,4 +1,4 @@
-import parse from '../index';
+import { parse } from '../index';
 import { IBytes, IID3Tag } from '../interface';
 import { convertFileToBuffer, fetchFileAsBuffer } from './helpers';
 

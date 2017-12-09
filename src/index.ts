@@ -5,7 +5,7 @@ import polyfill from './polyfill';
 
 polyfill(); // do polyfill.
 
-export default function parse(bytes: IBytes) {
+function parse(bytes: IBytes) {
     const v1data = parseV1Data(bytes);
     const v2data = parseV2Data(bytes);
     if (!v2data && !v1data) {
@@ -35,4 +35,5 @@ export default function parse(bytes: IBytes) {
 export {
     parseV1Data,
     parseV2Data,
+    parse,
 };
