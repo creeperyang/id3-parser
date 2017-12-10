@@ -1,8 +1,8 @@
 {
   "name": "id3-parser",
-  "version": "2.0.0-beta.1",
+  "version": "2.0.0-beta.2",
   "description": "A pure JavaScript id3 tag parser.",
-  "main": "lib/parser.js",
+  "main": "lib/index.js",
   "files": [
     "src",
     "lib"
