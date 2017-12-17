@@ -1,6 +1,6 @@
 node_modules
-*.tar.gz
-*.patch
-!test/*.mp3
+lib/
+.old/
+
+# logfiles
 *.log
-dest

@@ -1,6 +1,4 @@
-'use strict';
-
-module.exports = [
+export default [
     'other',
     'file-icon',
     'icon',
@@ -13,13 +11,13 @@ module.exports = [
     'conductor',
     'band',
     'composer',
-    'writer',
-    'location',
+    'lyricist-writer',
+    'recording-location',
     'during-recording',
     'during-performance',
     'screen',
     'fish',
     'illustration',
     'logo-band',
-    'logo-publisher'
+    'logo-publisher',
 ];

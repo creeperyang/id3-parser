@@ -1,0 +1,8 @@
+{
+    "eslint.enable": false,
+    "files.exclude": {
+        "**/.git": false,
+        ".vscode": false
+    },
+    "tslint.configFile": "tslint.json"
+}

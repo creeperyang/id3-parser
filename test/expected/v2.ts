@@ -1,63 +1,6 @@
-﻿# id3-parser
-
-[![Build Status](https://travis-ci.org/creeperyang/id3-parser.svg?branch=master)](https://travis-ci.org/creeperyang/id3-parser)
-[![npm version](https://badge.fury.io/js/id3-parser.svg)](https://badge.fury.io/js/id3-parser)
-[![download times](https://img.shields.io/npm/dm/id3-parser.svg)](https://www.npmjs.com/package/id3-parser)
-
-A pure JavaScript id3 tag parser.
-
-## Installation & Usage
-
-[![NPM](https://nodei.co/npm/id3-parser.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/id3-parser/)
-
-```js
-import * as ID3 from 'id3-parser';
-
-const tag = ID3.parse(buffer|uint8Array|number[]);
-console.log(tag);
-```
-
-If you want to use inside browser, you can use built-in browser helpers ( **always use with build tools such as webpack/browserify** ):
-
-```js
-import { parse } from 'id3-parser';
-import { convertFileToBuffer, fetchFileAsBuffer } from 'id3-parser/lib/universal/helpers';
-import universalParse from 'id3-parser/lib/universal';
-
-// You have a File instance in browser
-convertFileToBuffer(file).then(parse).then(tag => {
-    console.log(tag);
-});
-// Or a remote mp3 file url
-fetchFileAsBuffer(url).then(parse).then(tag => {
-    console.log(tag);
-});
-
-// Or a smarter parse
-universalParse(file|url|bytes).then(tag => {
-    console.log(tag);
-});
-```
-
-## API
-
-In most cases, you always want input an array of number (binary data) and then get the id3 tag info.
-
-```js
-import { parse, parseV1Tag, parseV2Tag } from 'id3-parser';
-parse(array) // ==> tag
-```
-
-### parse(buffer|uint8Array|number[])
-
-Parse id3v1 and id3v2.3 tags from a buffer(Node `Buffer` instance), uint8Array(`Uint8Array` instance).
-
-The typical parsed tag (return value) would be like:
-
-```js
-{
+export default {
     version: {
-        v1: false, // means no id3v1 tag
+        v1: false,
         v2: {
             major: 2,
             minor: 3,
@@ -88,18 +31,5 @@ The typical parsed tag (return value) would be like:
         type: 'cover-front',
         mime: 'image/jpeg',
         description: 'e',
-        data: buffer // just the cover's binary data
     },
-}
-```
-
-### parseV1Tag(buffer|uint8Array|number[]) | parseV2Tag(buffer|uint8Array|number[])
-
-Only parse id3v1 tag or id3v2 tag.
-
-## Typescript
-
-The lib is written with Typescript, so typings are shipped with the package.
-
-## License
-Copyright (c) 2015 creeperyang. Licensed under the MIT license.
+};

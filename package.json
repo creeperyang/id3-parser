@@ -1,22 +1,21 @@
 {
   "name": "id3-parser",
-  "version": "1.5.1",
+  "version": "2.0.0-beta.2",
   "description": "A pure JavaScript id3 tag parser.",
-  "main": "lib/parser.js",
-  "typings": "index.d.ts",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "files": [
-    "dest",
-    "lib",
-    "index.d.ts",
-    "id3Parser.d.ts"
+    "src",
+    "lib"
   ],
   "scripts": {
-    "lint": "grunt lint",
-    "build": "grunt build",
-    "prepublish": "npm run lint && npm run build",
-    "test:unit": "mocha -t 80000",
-    "test:ts": "tsc --noImplicitAny lib/parser-non-polyfilled.d.ts && tsc --noImplicitAny index.d.ts",
-    "test": "npm run test:unit && npm run test:ts"
+    "lint": "tslint src/**/*.ts test/**/*.ts -t verbose",
+    "lint-fix": "tslint src/**/*.ts test/**/*.ts -t verbose --fix",
+    "test": "TS_NODE_PROJECT='test/tsconfig.json' mocha --require ts-node/register 'test/*.spec.ts' --reporter dot",
+    "build": "npm run build:lib && npm run build:universal",
+    "build:lib": "rm -rf lib && tsc -P tsconfig.json",
+    "build:universal": "rm -rf lib/universal && tsc -P src/universal/tsconfig.json",
+    "prepublish": "npm run lint && npm run test && npm run build"
   },
   "repository": {
     "type": "git",
@@ -41,16 +40,12 @@
     "node": ">=0.10.0"
   },
   "devDependencies": {
+    "@types/mocha": "^2.2.44",
     "@types/node": "^8.0.46",
-    "grunt": "^1.0.1",
-    "grunt-browserify": "^5.0.0",
-    "grunt-contrib-jshint": "^1.1.0",
-    "grunt-contrib-uglify": "^2.1.0",
-    "jshint-stylish": "^2.2.1",
-    "load-grunt-tasks": "^3.5.2",
-    "mocha": "^3.5.0",
-    "time-grunt": "^1.4.0",
-    "typescript": "^2.5.3"
+    "mocha": "^4.0.1",
+    "ts-node": "^3.3.0",
+    "tslint": "^5.8.0",
+    "typescript": "^2.6.1"
   },
   "dependencies": {
     "promise-a-plus": "^0.7.0"
