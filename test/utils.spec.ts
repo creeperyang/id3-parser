@@ -1,5 +1,5 @@
 import * as assert from 'assert';
-import { readBytesToISO8859, readBytesToUTF16, readBytesToUTF8 } from '../src/utils';
+import { readBytesToISO8859, readBytesToUTF16, readBytesToUTF8 } from '../src/bytesUtil';
 
 describe('Test util lib.', () => {
     describe('#readBytesToUTF8', () => {

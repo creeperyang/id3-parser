@@ -1,6 +1,6 @@
 import GENRES from '../constants/genres';
 import { IBytes, IID3V1Tag } from '../interface';
-import { readBytesToUTF8 } from '../utils';
+import { readBytesToUTF8 } from '../bytesUtil';
 
 const V1_MIN_LENGTH = 128;
 
