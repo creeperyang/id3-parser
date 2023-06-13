@@ -2,10 +2,13 @@ import FARME_TYPES, { FrameTypeValueMap } from '../constants/frameTypes';
 import GENRES from '../constants/genres';
 import IMAGE_TYPES from '../constants/imageTypes';
 import { IBytes, IID3V2Tag, ITXXXMap, IV2VersionInfo } from '../interface';
-import { getEndpointOfBytes, readBytesToISO8859, readBytesToString, readBytesToUTF8, skipPaddingZeros } from '../utils';
+import { getEndpointOfBytes, readBytesToISO8859, readBytesToString, readBytesToUTF8, skipPaddingZeros } from '../bytesUtil';
 
 const V2_MIN_LENGTH = 20; // TAG HEADER(10) + ONE FRAME HEADER(10)
 
+/**
+ * Parse ID3v2 metadata from binary bytes.
+ */
 export default function parseV2Data(bytes: IBytes): false | IID3V2Tag {
     if (!bytes || bytes.length < V2_MIN_LENGTH) {
         return false;

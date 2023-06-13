@@ -24,7 +24,7 @@ export interface IImage {
     type: string;
     mime: string;
     descriptions: string;
-    data: ArrayLike<number>;
+    data?: ArrayLike<number>;
 }
 
 export interface IV1VersionInfo {
