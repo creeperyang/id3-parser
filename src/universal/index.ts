@@ -19,10 +19,6 @@ function getGlobal() {
 }
 
 const GLOBAL = getGlobal();
-if (!GLOBAL.Promise) {
-    // tslint:disable-next-line:no-var-requires
-    GLOBAL.Promise = require('promise-a-plus');
-}
 
 export default function uParse(bytes: IBytes | File | string): Promise<IID3Tag> {
     let promise;
