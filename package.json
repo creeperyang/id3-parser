@@ -9,12 +9,10 @@
     "lib"
   ],
   "scripts": {
-    "lint": "tslint src/**/*.ts test/**/*.ts -t verbose",
-    "lint-fix": "tslint src/**/*.ts test/**/*.ts -t verbose --fix",
+    "lint": "tslint src/**/*.ts test/**/*.ts",
+    "lint-fix": "tslint src/**/*.ts test/**/*.ts --fix",
     "test": "TS_NODE_PROJECT='test/tsconfig.json' mocha --require ts-node/register 'test/*.spec.ts' --reporter dot",
-    "build": "npm run build:lib && npm run build:universal",
-    "build:lib": "rm -rf lib && tsc -P tsconfig.json",
-    "build:universal": "rm -rf lib/universal && tsc -P src/universal/tsconfig.json",
+    "build": "rm -rf lib && tsc -P tsconfig.json",
     "prepublish": "npm run lint && npm run test && npm run build"
   },
   "repository": {
@@ -37,7 +35,7 @@
   },
   "homepage": "https://github.com/creeperyang/id3-parser#readme",
   "engines": {
-    "node": ">=0.10.0"
+    "node": ">=12"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.1",
