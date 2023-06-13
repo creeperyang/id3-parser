@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 import { readFileSync } from 'fs';
-import { parse } from '../src/index';
+import parse from '../src/index';
 import { IID3Tag, IID3V2Tag } from '../src/interface';
 import parseV1 from '../src/parsers/v1parser';
 import parseV2 from '../src/parsers/v2parser';

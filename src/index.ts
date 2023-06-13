@@ -29,8 +29,8 @@ function parse(bytes: IBytes) {
     return result;
 }
 
+export default parse;
 export {
     parseV1Tag,
     parseV2Tag,
-    parse,
 };
