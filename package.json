@@ -1,6 +1,6 @@
 {
   "name": "id3-parser",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "A pure JavaScript id3 tag parser.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -35,7 +35,7 @@
   },
   "homepage": "https://github.com/creeperyang/id3-parser#readme",
   "engines": {
-    "node": ">=12"
+    "node": ">=16"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.1",
